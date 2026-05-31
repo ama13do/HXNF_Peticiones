@@ -3,3 +3,8 @@
 
 [build.environment]
   NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/avanzado"
+  to = "/"
+  status = 301
