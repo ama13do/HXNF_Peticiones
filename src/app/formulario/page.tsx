@@ -19,6 +19,7 @@ export default function FormularioPage() {
   const [cp, setCp] = useState("");
   const [distritoElectoral, setDistritoElectoral] = useState("");
   const [aceptaPrivacidad, setAceptaPrivacidad] = useState(false);
+  const [recibirInfo, setRecibirInfo] = useState(false);
 
   // ── DB data ────────────────────────────────────────────────
   const [plantillas, setPlantillas] = useState<Plantilla[]>([]);
@@ -138,39 +139,36 @@ export default function FormularioPage() {
 
   // ── Cuerpo final personalizado ─────────────────────────────
   const getCuerpoFinal = () =>
-  personalizeBody(mensajePersonalizado, {
-    nombre,
-    apellido_paterno: apellidoPaterno,
-    apellido_materno: apellidoMaterno,
-    correo,
-    estado: estado ?? "",
-  });
+    personalizeBody(mensajePersonalizado, {
+      nombre,
+      apellido_paterno: apellidoPaterno,
+      apellido_materno: apellidoMaterno,
+      correo,
+      estado: estado ?? "",
+    });
 
   const getAsunto = () => plantillaSeleccionada?.asunto ?? "Petición ciudadana";
   const getCco = () => plantillaSeleccionada?.cco ?? "hxnf@practica.lab";
 
   // ── Validar formulario ─────────────────────────────────────
   const validar = (): boolean => {
-    if (!nombre.trim() || !apellidoPaterno.trim()) {
-      setError("Escribe tu nombre y apellido paterno.");
+    const faltantes = [];
+
+    if (!nombre.trim() || !apellidoPaterno.trim()) faltantes.push("Nombre y Apellido Paterno");
+    if (!correo.trim() || !correo.includes("@")) faltantes.push("Correo electrónico válido");
+    if (telefono.trim().length !== 10) faltantes.push("Teléfono válido a 10 dígitos");
+    if (!cp.trim() || cp.length < 5) faltantes.push("Código Postal a 5 dígitos");
+    if (!mensajePersonalizado.trim()) faltantes.push("Seleccionar o escribir una petición");
+    if (!aceptaPrivacidad) faltantes.push("Aceptar el aviso de privacidad");
+
+    if (faltantes.length > 0) {
+      const mensajeError = `Por favor, completa lo siguiente para continuar:\n\n- ${faltantes.join("\n- ")}`;
+      setError(mensajeError);
+      alert(mensajeError); // Alerta visual directa
       return false;
     }
-    if (!correo.trim() || !correo.includes("@")) {
-      setError("Escribe un correo válido.");
-      return false;
-    }
-    if (!cp.trim() || cp.length < 5) {
-      setError("Escribe tu código postal.");
-      return false;
-    }
-    if (!mensajePersonalizado.trim()) {
-      setError("Selecciona o escribe una petición.");
-      return false;
-    }
-    if (!aceptaPrivacidad) {
-      setError("Acepta el aviso de privacidad para continuar.");
-      return false;
-    }
+    
+    setError(""); // Limpiamos errores si todo está correcto
     return true;
   };
 
@@ -191,6 +189,7 @@ export default function FormularioPage() {
             telefono: telefono || null,
             codigo_postal: cp,
             distrito_electoral: distritoElectoral ? parseInt(distritoElectoral) : null,
+            recibir_info: recibirInfo,
           },
           { onConflict: "correo" }
         )
@@ -253,7 +252,9 @@ export default function FormularioPage() {
     });
 
     if (emails.length === 0) {
-      setError("Ningún legislador seleccionado tiene correo registrado.");
+      const msg = "Ningún legislador seleccionado tiene correo registrado.";
+      setError(msg);
+      alert(msg);
       return;
     }
     setEnviando(true);
@@ -282,19 +283,16 @@ export default function FormularioPage() {
           ${sel ? "border-hxnf-green bg-hxnf-green/10" : "border-white/10 bg-white/5 hover:border-white/25"}
           ${!email ? "opacity-50 cursor-default" : ""}`}
       >
-        {/* Checkbox visual */}
         <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-colors
           ${sel ? "bg-hxnf-green border-hxnf-green" : "border-white/30"}`}>
           {sel && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
         </div>
 
-        {/* Avatar */}
         <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0
           ${sel ? "bg-hxnf-green text-black" : "bg-white/10 text-white"}`}>
           {initials}
         </div>
 
-        {/* Info */}
         <div className="flex-1 min-w-0">
           {d.URL_Perfil_Curriculum ? (
             <a
@@ -314,7 +312,6 @@ export default function FormularioPage() {
           </div>
         </div>
 
-        {/* Botón escribir individual */}
         {email ? (
           <button
             onClick={(e) => { e.stopPropagation(); enviarUno(email, d.Id, "diputado"); }}
@@ -393,7 +390,6 @@ export default function FormularioPage() {
       <main className="max-w-6xl mx-auto px-4 py-8 pb-32 lg:pb-8">
         {/* Header */}
         <div className="text-center mb-8">
-          
           <h1 className="text-4xl sm:text-5xl font-bold mb-2">
             Tu petición, tu <span className="text-hxnf-green">nombre</span>
           </h1>
@@ -403,7 +399,6 @@ export default function FormularioPage() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 items-start">
-
           {/* ════════════════════════════════════════
               COLUMNA PRINCIPAL
           ════════════════════════════════════════ */}
@@ -434,16 +429,35 @@ export default function FormularioPage() {
                   placeholder="Correo electrónico *"
                   className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm focus:border-hxnf-green transition-colors" />
 
-                <input type="tel" value={telefono} onChange={(e) => setTelefono(e.target.value)}
-                  placeholder="Teléfono *"
-                  className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm focus:border-hxnf-green transition-colors" />
+                {/* TELÉFONO FILTRADO Y A 10 DÍGITOS */}
+                <input 
+                  type="tel" 
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={10}
+                  value={telefono} 
+                  onChange={(e) => setTelefono(e.target.value.replace(/\D/g, ''))}
+                  placeholder="Teléfono (10 dígitos) *"
+                  className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm focus:border-hxnf-green transition-colors" 
+                />
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="relative">
-                    <input type="text" value={cp}
-                      onChange={(e) => { setCp(e.target.value); if (e.target.value.length < 5) { setEstado(null); setDiputados([]); setSenadores([]); } }}
-                      placeholder="Código postal *" maxLength={5}
-                      className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm focus:border-hxnf-green transition-colors" />
+                    {/* CÓDIGO POSTAL FILTRADO A NÚMEROS Y 5 DÍGITOS */}
+                    <input 
+                      type="text" 
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={5}
+                      value={cp}
+                      onChange={(e) => { 
+                        const val = e.target.value.replace(/\D/g, '');
+                        setCp(val); 
+                        if (val.length < 5) { setEstado(null); setDiputados([]); setSenadores([]); } 
+                      }}
+                      placeholder="Código postal *" 
+                      className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm focus:border-hxnf-green transition-colors" 
+                    />
                     {loadingLeg && (
                       <div className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 border-2 border-hxnf-green border-t-transparent rounded-full animate-spin" />
                     )}
@@ -474,7 +488,6 @@ export default function FormularioPage() {
               </div>
 
               <div className="p-5 space-y-4">
-                {/* Tabs: plantilla vs personalizado */}
                 <div className="flex gap-2 p-1 bg-white/5 rounded-xl">
                   <button
                     onClick={() => setModoMensaje("plantilla")}
@@ -507,7 +520,6 @@ export default function FormularioPage() {
                       </div>
                     )}
 
-                    {/* Preview del cuerpo */}
                     {plantillaSeleccionada && (
                       <div className="bg-white/5 border border-white/10 rounded-xl p-3">
                         <div className="text-white/40 text-xs mb-1 font-semibold uppercase tracking-wider">Vista previa</div>
@@ -527,31 +539,45 @@ export default function FormularioPage() {
                   />
                 )}
 
-                {/* Privacidad checkbox */}
                 <label className="flex items-start gap-3 cursor-pointer group">
                   <div
                     onClick={() => setAceptaPrivacidad((v) => !v)}
-                    className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-colors cursor-pointer ${aceptaPrivacidad ? "bg-hxnf-green border-hxnf-green" : "border-white/30 group-hover:border-white/60"}`}
+                    className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-colors cursor-pointer ${
+                      aceptaPrivacidad ? "bg-hxnf-green border-hxnf-green" : "border-white/30 group-hover:border-white/60"
+                    }`}
                   >
-                    {aceptaPrivacidad && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                    {aceptaPrivacidad && (
+                      <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 12 12">
+                        <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
                   </div>
                   <span className="text-white/50 text-xs leading-relaxed">
-                    ¿Te gustaría recibir más información para sumarte a cambiar las cosas?
+                    He leído y acepto el{" "}
+                    <a href="/#privacidad" className="text-hxnf-green underline">
+                      aviso de privacidad
+                    </a>
+                    . Entiendo que se registrará mi petición y que el correo se enviará desde mi propia app.
                   </span>
                 </label>
 
-                <label className="flex items-start gap-3 cursor-pointer group">
+                <label className="flex items-start gap-3 cursor-pointer group mt-4">
                   <div
-                    onClick={() => setAceptaPrivacidad((v) => !v)}
-                    className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-colors cursor-pointer ${aceptaPrivacidad ? "bg-hxnf-green border-hxnf-green" : "border-white/30 group-hover:border-white/60"}`}
+                    onClick={() => setRecibirInfo((v) => !v)}
+                    className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-colors cursor-pointer ${
+                      recibirInfo ? "bg-hxnf-green border-hxnf-green" : "border-white/30 group-hover:border-white/60"
+                    }`}
                   >
-                    {aceptaPrivacidad && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                    {recibirInfo && (
+                      <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 12 12">
+                        <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
                   </div>
-                  <span className="text-white/50 text-xs leading-relaxed">
+                  <span className="text-white/50 text-xs leading-relaxed mt-0.5">
                     ¿Te gustaría recibir más información para sumarte a cambiar las cosas?
                   </span>
                 </label>
-                
               </div>
             </div>
 
@@ -581,7 +607,6 @@ export default function FormularioPage() {
                 </div>
               ) : (
                 <>
-                  {/* Filtros */}
                   <div className="px-5 py-3 border-b border-white/5 space-y-3">
                     <div className="flex gap-2 flex-wrap">
                       {(["todos", "diputados", "senadores"] as FiltroTipo[]).map((t) => (
@@ -618,7 +643,6 @@ export default function FormularioPage() {
                     </div>
                   </div>
 
-                  {/* Lista */}
                   <div className="p-4 space-y-4">
                     {filtroTipo !== "senadores" && diputadosFiltrados.length > 0 && (
                       <div>
@@ -648,8 +672,9 @@ export default function FormularioPage() {
               )}
             </div>
 
+            {/* Error visual inferior */}
             {error && (
-              <div className="border border-red-500/40 bg-red-500/10 text-red-400 rounded-xl px-4 py-3 text-sm">
+              <div className="border border-red-500/40 bg-red-500/10 text-red-400 rounded-xl px-4 py-3 text-sm whitespace-pre-wrap">
                 ⚠ {error}
               </div>
             )}
@@ -659,7 +684,6 @@ export default function FormularioPage() {
               SIDEBAR (desktop)
           ════════════════════════════════════════ */}
           <div className="hidden lg:flex lg:w-72 flex-col gap-4 sticky top-20">
-            {/* Cómo funciona */}
             <div className="border border-white/10 bg-white/5 rounded-2xl p-5">
               <h3 className="font-bold text-white mb-4 text-sm">¿Cómo funciona?</h3>
               <div className="space-y-3">
@@ -677,7 +701,6 @@ export default function FormularioPage() {
               </div>
             </div>
 
-            {/* Tu representación */}
             {estado && (
               <div className="border border-hxnf-green/20 bg-hxnf-green/5 rounded-2xl p-5">
                 <h3 className="font-semibold text-white mb-2 text-sm">🏛 Tu representación</h3>
@@ -688,7 +711,6 @@ export default function FormularioPage() {
               </div>
             )}
 
-            {/* Botón enviar todos (sidebar desktop) */}
             {seleccionados.size > 0 && (
               <button
                 onClick={enviarSeleccionados}
@@ -703,7 +725,6 @@ export default function FormularioPage() {
               </button>
             )}
 
-            {/* Privacidad */}
             <div className="border border-white/10 bg-white/5 rounded-2xl p-4">
               <p className="text-white/40 text-xs leading-relaxed">
                 🔒 Tus datos <strong className="text-white">nunca salen de tu dispositivo</strong>.
@@ -715,7 +736,7 @@ export default function FormularioPage() {
       </main>
 
       {/* ════════════════════════════════════════
-          BOTÓN FLOTANTE MÓVIL (siempre visible si hay seleccionados)
+          BOTÓN FLOTANTE MÓVIL
       ════════════════════════════════════════ */}
       {seleccionados.size > 0 && (
         <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-8">
