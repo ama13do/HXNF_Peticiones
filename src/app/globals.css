@@ -1,0 +1,115 @@
+/* src/app/globals.css */
+
+/* ── Fuente local Parkinsans ── */
+/* Coloca tus archivos .woff2 en /public/fonts/ */
+@font-face {
+  font-family: "Parkinsans";
+  src: url("/fonts/Parkinsans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Parkinsans";
+  src: url("/fonts/Parkinsans-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Parkinsans";
+  src: url("/fonts/Parkinsans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --beige: #faf5e1;
+  --green: #0be340;
+  --yellow: #e0fa49;
+  --orange: #ff8636;
+  --blue: #2e7dfc;
+  --pink: #fd8cbb;
+  --red: #fc3169;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Parkinsans", sans-serif;
+  background-color: #000000;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #0be340;
+  border-radius: 3px;
+}
+
+/* Ticker tape */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-tape {
+  animation: ticker 20s linear infinite;
+}
+
+/* Input focus */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #0be340 !important;
+}
+
+/* Checkbox custom */
+input[type="checkbox"] {
+  accent-color: #0be340;
+}
+
+/* Expandable animation */
+@keyframes slideDown {
+  from { max-height: 0; opacity: 0; }
+  to { max-height: 2000px; opacity: 1; }
+}
+.slide-down {
+  animation: slideDown 0.4s ease-out;
+}
+
+/* Fade in */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+  animation: fadeInUp 0.5s ease-out both;
+}
+
+.fade-in-up-delay-1 { animation-delay: 0.1s; }
+.fade-in-up-delay-2 { animation-delay: 0.2s; }
+.fade-in-up-delay-3 { animation-delay: 0.3s; }
