@@ -728,7 +728,7 @@ export default function FormularioPage() {
             <div className="border border-white/10 bg-white/5 rounded-2xl p-4">
               <p className="text-white/40 text-xs leading-relaxed">
                 🔒 Tus datos <strong className="text-white">nunca salen de tu dispositivo</strong>.
-                Los correos van directo desde tu app de correos. Copia oculta a <span className="text-hxnf-green">hxnf@practica.lab</span>.
+                Los correos van directo desde tu app de correos. Copia oculta a <span className="text-hxnf-green">hxnf@practica.lat</span>.
               </p>
             </div>
           </div>

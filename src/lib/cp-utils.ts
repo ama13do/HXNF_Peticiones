@@ -48,7 +48,7 @@ export function abrirCorreo(params: {
   cco?: string;
 }): void {
   const { emails, asunto, cuerpo, cco } = params;
-  const bcc = cco ?? "hxnf@practica.lab";
+  const bcc = cco ?? "hxnf@practica.lat";
   const to = emails.join(",");
 
   if (isMobile()) {

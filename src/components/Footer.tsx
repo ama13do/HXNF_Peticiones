@@ -48,7 +48,7 @@ export default function Footer() {
             Nuestro Futuro A.C. + Práctica Laboratorio para la Democracia A.C.
           </p>
           <p className="text-white/30 text-xs mt-0.5">
-            hxnf@practica.lab
+            hxnf@practica.lat
           </p>
         </div>
 

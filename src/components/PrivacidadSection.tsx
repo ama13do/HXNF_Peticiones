@@ -28,7 +28,7 @@ No recabamos datos personales sensibles en términos del artículo 3, fracción 
 4. Invitarle a sumarse al capítulo estatal de Hackers x Nuestro Futuro.
 5. Mantenerle informada/o sobre actividades y campañas futuras.
 
-Si no desea las finalidades 4 o 5, escríbenos a hxnf@practica.lab con el asunto "Oposición a finalidades secundarias".
+Si no desea las finalidades 4 o 5, escríbenos a hxnf@practica.lat con el asunto "Oposición a finalidades secundarias".
 
 ## IV. Transferencia de datos personales
 
@@ -38,14 +38,14 @@ Sus datos se comunicarán únicamente a los representantes legislativos de su ci
 
 Tiene derecho a Acceder, Rectificar, Cancelar y Oponerse al tratamiento de sus datos. Para ejercerlos:
 
-Correo: hxnf@practica.lab
+Correo: hxnf@practica.lat
 Asunto: "Solicitud ARCO — [su nombre completo]"
 
 Responderemos en 20 días hábiles (art. 32 LFPDPPP). Puede presentar quejas ante el INAI en www.inai.org.mx.
 
 ## VI. Revocación del consentimiento
 
-Puede revocar su consentimiento enviando a hxnf@practica.lab el asunto "Revocación de consentimiento". La revocación no tendrá efectos retroactivos sobre correos ya enviados.
+Puede revocar su consentimiento enviando a hxnf@practica.lat el asunto "Revocación de consentimiento". La revocación no tendrá efectos retroactivos sobre correos ya enviados.
 
 ## VII. Consentimiento
 
@@ -88,7 +88,7 @@ export default function PrivacidadSection() {
             </div>
             <div className="bg-hxnf-green/10 border border-hxnf-green/20 rounded-xl p-4">
               <div className="text-hxnf-green font-semibold mb-1">✓ Copia oculta</div>
-              <p className="text-white/70">Todos los envíos incluyen copia a hxnf@practica.lab para registro.</p>
+              <p className="text-white/70">Todos los envíos incluyen copia a hxnf@practica.lat para registro.</p>
             </div>
           </div>
         </div>
