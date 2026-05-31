@@ -536,11 +536,22 @@ export default function FormularioPage() {
                     {aceptaPrivacidad && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                   </div>
                   <span className="text-white/50 text-xs leading-relaxed">
-                    He leído y acepto el{" "}
-                    <a href="/#privacidad" className="text-hxnf-green underline">aviso de privacidad</a>.
-                    Entiendo que se registrará mi petición y que el correo se enviará desde mi propia app.
+                    ¿Te gustaría recibir más información para sumarte a cambiar las cosas?
                   </span>
                 </label>
+
+                <label className="flex items-start gap-3 cursor-pointer group">
+                  <div
+                    onClick={() => setAceptaPrivacidad((v) => !v)}
+                    className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-colors cursor-pointer ${aceptaPrivacidad ? "bg-hxnf-green border-hxnf-green" : "border-white/30 group-hover:border-white/60"}`}
+                  >
+                    {aceptaPrivacidad && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                  </div>
+                  <span className="text-white/50 text-xs leading-relaxed">
+                    ¿Te gustaría recibir más información para sumarte a cambiar las cosas?
+                  </span>
+                </label>
+                
               </div>
             </div>
 

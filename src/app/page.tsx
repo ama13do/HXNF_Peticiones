@@ -107,7 +107,7 @@ export default function HomePage() {
               <p className="text-white/50 text-xs mt-2 leading-relaxed">
                 Todos los envíos incluyen copia oculta a{" "}
                 <strong className="text-hxnf-green">hxnf@practica.lab</strong> para llevar
-                registro del movimiento ciudadano.
+                registro del impacto ciudadano.
               </p>
               
             </div>
