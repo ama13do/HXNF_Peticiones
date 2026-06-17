@@ -459,7 +459,7 @@ export default function FormularioPage() {
             disabled={enviando}
             className="bg-hxnf-green text-black text-xs font-bold px-3 py-1.5 rounded-full hover:bg-hxnf-yellow transition-colors disabled:opacity-50 flex-shrink-0 whitespace-nowrap"
           >
-            ✉ Escribir
+            Escribir
           </button>
         ) : (
           <span className="text-white/25 text-xs flex-shrink-0">
@@ -544,7 +544,7 @@ export default function FormularioPage() {
             disabled={enviando}
             className="bg-hxnf-green text-black text-xs font-bold px-3 py-1.5 rounded-full hover:bg-hxnf-yellow transition-colors disabled:opacity-50 flex-shrink-0 whitespace-nowrap"
           >
-            ✉ Escribir
+            Escribir
           </button>
         ) : (
           <span className="text-white/25 text-xs flex-shrink-0">
@@ -673,7 +673,6 @@ export default function FormularioPage() {
                 {/* Estado detectado */}
                 {estado && (
                   <div className="bg-hxnf-green/10 border border-hxnf-green/30 rounded-xl px-4 py-2.5 flex items-center gap-2 text-sm">
-                    <span>📍</span>
                     <span className="text-white/70">
                       Estado:{" "}
                       <strong className="text-hxnf-green">{estado}</strong>
@@ -857,7 +856,6 @@ export default function FormularioPage() {
 
               {!hayLegisladores ? (
                 <div className="p-10 text-center">
-                  <div className="text-5xl mb-3">🏛</div>
                   <p className="text-white/40 text-sm">
                     Escribe tu código postal arriba
                   </p>
@@ -1000,7 +998,7 @@ export default function FormularioPage() {
             {estado && (
               <div className="border border-hxnf-green/20 bg-hxnf-green/5 rounded-2xl p-5">
                 <h3 className="font-semibold text-white mb-2 text-sm">
-                  🏛 Tu representación
+                  Tu representación
                 </h3>
                 <p className="text-hxnf-green font-bold">{estado}</p>
                 <p className="text-white/50 text-xs mt-1">
@@ -1022,7 +1020,7 @@ export default function FormularioPage() {
                   </>
                 ) : (
                   <>
-                    ✉ Enviar a {seleccionados.size} legislador
+                    Enviar a {seleccionados.size} legislador
                     {seleccionados.size !== 1 ? "es" : ""}
                   </>
                 )}
@@ -1031,7 +1029,7 @@ export default function FormularioPage() {
 
             <div className="border border-white/10 bg-white/5 rounded-2xl p-4">
               <p className="text-white/40 text-xs leading-relaxed">
-                🔒 Tus datos{" "}
+                Tus datos{" "}
                 <strong className="text-white">
                   nunca salen de tu dispositivo
                 </strong>
@@ -1060,7 +1058,7 @@ export default function FormularioPage() {
               </>
             ) : (
               <>
-                ✉ Enviar a {seleccionados.size} legislador
+                Enviar a {seleccionados.size} legislador
                 {seleccionados.size !== 1 ? "es" : ""} →
               </>
             )}

@@ -62,7 +62,7 @@ export default function PrivacidadSection() {
       <div className="border border-white/10 rounded-2xl overflow-hidden">
         <div className="bg-white/5 px-6 py-5 flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-white">🔒 Aviso de Privacidad</h2>
+            <h2 className="text-lg font-semibold text-white">Aviso de Privacidad</h2>
             <p className="text-white/50 text-sm mt-0.5">
               Coalición Hackers x Nuestro Futuro · Última actualización: 30/05/2026
             </p>

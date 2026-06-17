@@ -96,7 +96,6 @@ export default function HomePage() {
             {/* Privacy summary card */}
             <div className="border border-white/10 bg-white/5 rounded-2xl p-5 mt-4">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-hxnf-green">🔒</span>
                 <h3 className="font-semibold text-white text-sm">Privacidad</h3>
               </div>
               <p className="text-white/60 text-xs leading-relaxed">
